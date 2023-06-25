@@ -43,10 +43,10 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "snooze_interval")
-    private String snoozeInterval;
+    private Integer snoozeInterval;
 
     @Column(name = "snooze_repeat")
-    private String snoozeRepeat;
+    private Integer snoozeRepeat;
 
 
     @Override
