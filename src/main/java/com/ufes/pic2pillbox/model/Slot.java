@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.ufes.pic2pillbox.enums.SlotNumber;
 import lombok.Getter;
 import lombok.Setter;
 
