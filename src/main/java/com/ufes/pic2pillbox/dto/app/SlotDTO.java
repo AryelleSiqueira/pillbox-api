@@ -1,6 +1,5 @@
-package com.ufes.pic2pillbox.dto.pillbox;
+package com.ufes.pic2pillbox.dto.app;
 
-import com.ufes.pic2pillbox.model.SlotNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,11 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AlarmDTO {
+public class SlotDTO {
 
-    private int hour;
+    private String name;
 
-    private int minute;
-
-    private List<SlotNumber> slots;
+    private List<AlarmDTO> alarms;
 }

@@ -5,7 +5,6 @@ import com.ufes.pic2pillbox.dto.pillbox.PillboxConfigDTO;
 import com.ufes.pic2pillbox.dto.pillbox.SnoozeConfigDTO;
 import com.ufes.pic2pillbox.model.Alarm;
 import com.ufes.pic2pillbox.model.Slot;
-import com.ufes.pic2pillbox.model.SlotNumber;
 import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.SlotRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class PillboxConfigService {
             AlarmDTO.builder()
                     .hour(alarm.getHour())
                     .minute(alarm.getMinute())
-                    .slots(alarm.getSlots().stream().map(Slot::getSlotNumber).toArray(SlotNumber[]::new))
+                    .slots(alarm.getSlots().stream().map(Slot::getSlotNumber).collect(Collectors.toList()))
                     .build()
         ).collect(Collectors.toList());
 

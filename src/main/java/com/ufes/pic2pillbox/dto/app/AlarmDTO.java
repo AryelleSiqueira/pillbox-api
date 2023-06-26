@@ -1,13 +1,10 @@
-package com.ufes.pic2pillbox.dto.pillbox;
+package com.ufes.pic2pillbox.dto.app;
 
-import com.ufes.pic2pillbox.model.SlotNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +16,4 @@ public class AlarmDTO {
     private int hour;
 
     private int minute;
-
-    private List<SlotNumber> slots;
 }
