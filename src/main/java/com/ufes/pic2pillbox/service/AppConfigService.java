@@ -10,6 +10,7 @@ import com.ufes.pic2pillbox.model.SlotNumber;
 import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.AlarmRepository;
 import com.ufes.pic2pillbox.repository.SlotRepository;
+import com.ufes.pic2pillbox.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AppConfigService {
+
+    private final UserRepository userRepository;
 
     private final SlotRepository slotRepository;
 
@@ -61,6 +64,10 @@ public class AppConfigService {
     @Transactional
     public Map<String, String> configure(AppConfigDTO appConfig) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        final User user = userRepository.findById(userId).orElse(new User());
+        user.setSnoozeInterval(appConfig.getSnoozeConfig().getInterval());
+        user.setSnoozeRepeat(appConfig.getSnoozeConfig().getRepeat());
 
         final List<Slot> oldSlots = slotRepository.findAllByUserId(userId);
         deleteSlotsAndAlarms(oldSlots);
