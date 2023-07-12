@@ -72,14 +72,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-<!--				<configuration>-->
-				<!--					<environmentVariables>-->
-				<!--						<DB_URL>mysql://localhost:3306/smart_pillbox</DB_URL>-->
-				<!--						<MYSQL_USER>root</MYSQL_USER>-->
-				<!--						<MYSQL_PASSWORD>root</MYSQL_PASSWORD>-->
-				<!--						<SECRET_KEY>Jk2085qlhXYZUao2bSdgFFDhgj87Xfe67cj7WwIaBQSxc</SECRET_KEY>-->
-				<!--					</environmentVariables>-->
-				<!--				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
