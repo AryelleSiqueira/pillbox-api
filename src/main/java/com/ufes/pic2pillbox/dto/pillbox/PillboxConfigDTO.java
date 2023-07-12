@@ -20,5 +20,5 @@ public class PillboxConfigDTO {
 
     private List<AlarmDTO> alarms;
 
-    private SnoozeConfigDTO snoozeConfig;
+    //private SnoozeConfigDTO snoozeConfig;
 }

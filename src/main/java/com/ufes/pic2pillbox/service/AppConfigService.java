@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AppConfigService {
 
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     private final SlotRepository slotRepository;
 
@@ -41,7 +41,7 @@ public class AppConfigService {
         if (slots.isEmpty()) {
             return AppConfigDTO.builder().build();
         }
-        final User user = slots.get(0).getUser();
+        //final User user = slots.get(0).getUser();
         final Map<String, SlotDTO> slotsMap = new HashMap<>();
 
         slots.forEach(slot -> {
@@ -57,7 +57,7 @@ public class AppConfigService {
 
         return AppConfigDTO.builder()
                 .slots(slotsMap)
-                .snoozeConfig(SnoozeConfigDTO.builder().interval(user.getSnoozeInterval()).repeat(user.getSnoozeRepeat()).build())
+                //.snoozeConfig(SnoozeConfigDTO.builder().interval(user.getSnoozeInterval()).repeat(user.getSnoozeRepeat()).build())
                 .build();
     }
 
@@ -65,9 +65,9 @@ public class AppConfigService {
     public Map<String, String> configure(AppConfigDTO appConfig) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        final User user = userRepository.findById(userId).orElse(new User());
-        user.setSnoozeInterval(appConfig.getSnoozeConfig().getInterval());
-        user.setSnoozeRepeat(appConfig.getSnoozeConfig().getRepeat());
+        //final User user = userRepository.findById(userId).orElse(new User());
+        //user.setSnoozeInterval(appConfig.getSnoozeConfig().getInterval());
+        //user.setSnoozeRepeat(appConfig.getSnoozeConfig().getRepeat());
 
         final List<Slot> oldSlots = slotRepository.findAllByUserId(userId);
         deleteSlotsAndAlarms(oldSlots);

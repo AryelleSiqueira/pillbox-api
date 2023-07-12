@@ -47,11 +47,11 @@ public class User implements UserDetails {
     @ColumnDefault("false")
     private Boolean pillboxAssociated;
 
-    @Column(name = "snooze_interval")
-    private Integer snoozeInterval;
-
-    @Column(name = "snooze_repeat")
-    private Integer snoozeRepeat;
+//    @Column(name = "snooze_interval")
+//    private Integer snoozeInterval;
+//
+//    @Column(name = "snooze_repeat")
+//    private Integer snoozeRepeat;
 
 
     @Override

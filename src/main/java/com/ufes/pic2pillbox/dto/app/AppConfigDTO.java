@@ -1,6 +1,5 @@
 package com.ufes.pic2pillbox.dto.app;
 
-import com.ufes.pic2pillbox.dto.pillbox.SnoozeConfigDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +17,5 @@ public class AppConfigDTO {
 
     private Map<String, SlotDTO> slots;
 
-    private SnoozeConfigDTO snoozeConfig;
+    //private SnoozeConfigDTO snoozeConfig;
 }

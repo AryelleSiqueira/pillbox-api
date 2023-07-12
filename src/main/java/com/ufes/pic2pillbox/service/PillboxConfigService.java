@@ -2,7 +2,6 @@ package com.ufes.pic2pillbox.service;
 
 import com.ufes.pic2pillbox.dto.pillbox.AlarmDTO;
 import com.ufes.pic2pillbox.dto.pillbox.PillboxConfigDTO;
-import com.ufes.pic2pillbox.dto.pillbox.SnoozeConfigDTO;
 import com.ufes.pic2pillbox.model.Alarm;
 import com.ufes.pic2pillbox.model.Slot;
 import com.ufes.pic2pillbox.model.User;
@@ -31,7 +30,7 @@ public class PillboxConfigService {
         if (slots.isEmpty()) {
             return PillboxConfigDTO.builder().build();
         }
-        final User user = slots.get(0).getUser();
+        //final User user = slots.get(0).getUser();
         final Map<String, String> slotsNames = new HashMap<>();
         final Map<Integer, Alarm> alarms = new HashMap<>();
 
@@ -51,7 +50,7 @@ public class PillboxConfigService {
         return PillboxConfigDTO.builder()
                 .slots(slotsNames)
                 .alarms(alarmDTOList)
-                .snoozeConfig(SnoozeConfigDTO.builder().interval(user.getSnoozeInterval()).repeat(user.getSnoozeRepeat()).build())
+                //.snoozeConfig(SnoozeConfigDTO.builder().interval(user.getSnoozeInterval()).repeat(user.getSnoozeRepeat()).build())
                 .build();
     }
 
