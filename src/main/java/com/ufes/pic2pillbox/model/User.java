@@ -26,7 +26,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 public class User implements UserDetails {
 
     @Id
@@ -43,9 +43,9 @@ public class User implements UserDetails {
     @Column(name="password", nullable = false)
     private String password;
 
-    @Column(name = "pillbox_associated", nullable = false)
-    @ColumnDefault("false")
-    private Boolean pillboxAssociated;
+//    @Column(name = "pillbox_associated", nullable = false)
+//    @ColumnDefault(false)
+//    private Boolean pillboxAssociated;
 
 //    @Column(name = "snooze_interval")
 //    private Integer snoozeInterval;
