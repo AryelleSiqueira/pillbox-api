@@ -3,14 +3,12 @@ package com.ufes.pic2pillbox.service;
 import com.ufes.pic2pillbox.dto.app.AppConfigDTO;
 import com.ufes.pic2pillbox.dto.app.SlotDTO;
 import com.ufes.pic2pillbox.dto.app.AlarmDTO;
-import com.ufes.pic2pillbox.dto.pillbox.SnoozeConfigDTO;
 import com.ufes.pic2pillbox.model.Alarm;
 import com.ufes.pic2pillbox.model.Slot;
 import com.ufes.pic2pillbox.model.SlotNumber;
 import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.AlarmRepository;
 import com.ufes.pic2pillbox.repository.SlotRepository;
-import com.ufes.pic2pillbox.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AppConfigService {
-
-    //private final UserRepository userRepository;
 
     private final SlotRepository slotRepository;
 

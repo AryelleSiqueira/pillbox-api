@@ -29,7 +29,4 @@ public class Code {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(name = "expires_in")
-    private Long expiresIn;
 }

@@ -10,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,20 +26,26 @@ public class AuthCodeController {
     private final AuthCodeService authenticationService;
 
 
-    @GetMapping("/get") // ESP8266 will call this endpoint to get a unique code
+    @GetMapping("/get")
     public ResponseEntity<AuthCodeDTO> getCode() {
-        return ResponseEntity.ok(authenticationService.getCode());
+        return ResponseEntity.ok(authenticationService.generateCode());
     }
 
-    @GetMapping("/get/token/{code}") // ESP8266 will call this endpoint to get auth token
-    public ResponseEntity<AuthenticationResponseDTO> getTokenByCode(@PathVariable int code) {
-        return ResponseEntity.ok(authenticationService.getTokenByCode(code));
+    @GetMapping("/get/token")
+    public ResponseEntity<AuthenticationResponseDTO> getTokenByCode(@RequestBody AuthCodeDTO authCode) {
+        return ResponseEntity.ok(authenticationService.getTokenByCode(authCode));
     }
 
-    @PostMapping("/associate") // Mobile app will call this endpoint to associate user with code
+    @PostMapping("/associate")
     @ResponseStatus(HttpStatus.OK)
     public void associateUser(@RequestBody AuthCodeDTO authCode) {
         authenticationService.associateUser(authCode);
+    }
+
+    @PostMapping("/disassociate")
+    @ResponseStatus(HttpStatus.OK)
+    public void disassociateUser() {
+        authenticationService.disassociateUser();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
