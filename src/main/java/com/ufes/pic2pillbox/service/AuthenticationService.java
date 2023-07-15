@@ -34,7 +34,6 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .pillboxAssociated(false)
                 .build();
         userRepository.save(user);
     }
