@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,10 +38,10 @@ public class AuthCodeController {
         return ResponseEntity.ok(authenticationService.getTokenByCode(code));
     }
 
-    @PostMapping("/associate/{code}") // Mobile app will call this endpoint to associate user with code
+    @PostMapping("/associate") // Mobile app will call this endpoint to associate user with code
     @ResponseStatus(HttpStatus.OK)
-    public void associateUser(@PathVariable int code) {
-        authenticationService.associateUser(code);
+    public void associateUser(@RequestBody AuthCodeDTO authCode) {
+        authenticationService.associateUser(authCode);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

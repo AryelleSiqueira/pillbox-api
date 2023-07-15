@@ -73,8 +73,8 @@ public class AuthCodeService {
                 .build();
     }
 
-    public void associateUser(int code) {
-        final Code codeEntity = codeRepository.findById(code)
+    public void associateUser(AuthCodeDTO code) {
+        final Code codeEntity = codeRepository.findById(code.getCode())
                 .orElseThrow(() -> new InvalidCodeException("Invalid code."));
 
         if (codeEntity.getExpiresIn() < System.currentTimeMillis()) {
