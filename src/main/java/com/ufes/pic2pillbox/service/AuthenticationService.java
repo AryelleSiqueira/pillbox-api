@@ -26,7 +26,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public AuthenticationResponseDTO register(RegisterRequestDTO request) {
+    public void register(RegisterRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email already in use.");
         }
@@ -34,12 +34,9 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .pillboxAssociated(false)
                 .build();
         userRepository.save(user);
-
-        return AuthenticationResponseDTO.builder()
-                .token(jwtService.generateToken(user))
-                .build();
     }
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {

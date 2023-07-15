@@ -30,7 +30,6 @@ public class PillboxConfigService {
         if (slots.isEmpty()) {
             return PillboxConfigDTO.builder().build();
         }
-        //final User user = slots.get(0).getUser();
         final Map<String, String> slotsNames = new HashMap<>();
         final Map<Integer, Alarm> alarms = new HashMap<>();
 
@@ -50,7 +49,6 @@ public class PillboxConfigService {
         return PillboxConfigDTO.builder()
                 .slots(slotsNames)
                 .alarms(alarmDTOList)
-                //.snoozeConfig(SnoozeConfigDTO.builder().interval(user.getSnoozeInterval()).repeat(user.getSnoozeRepeat()).build())
                 .build();
     }
 

@@ -43,15 +43,8 @@ public class User implements UserDetails {
     @Column(name="password", nullable = false)
     private String password;
 
-//    @Column(name = "pillbox_associated", nullable = false)
-//    @ColumnDefault(false)
-//    private Boolean pillboxAssociated;
-
-//    @Column(name = "snooze_interval")
-//    private Integer snoozeInterval;
-//
-//    @Column(name = "snooze_repeat")
-//    private Integer snoozeRepeat;
+    @Column(name = "pillbox_associated", nullable = false)
+    private Boolean pillboxAssociated;
 
 
     @Override
