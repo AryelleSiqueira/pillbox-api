@@ -19,6 +19,4 @@ public class PillboxConfigDTO {
     private Map<String, String> slots;
 
     private List<AlarmDTO> alarms;
-
-    //private SnoozeConfigDTO snoozeConfig;
 }

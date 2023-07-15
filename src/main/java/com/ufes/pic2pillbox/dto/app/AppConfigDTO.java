@@ -16,6 +16,4 @@ import java.util.Map;
 public class AppConfigDTO {
 
     private Map<String, SlotDTO> slots;
-
-    //private SnoozeConfigDTO snoozeConfig;
 }
