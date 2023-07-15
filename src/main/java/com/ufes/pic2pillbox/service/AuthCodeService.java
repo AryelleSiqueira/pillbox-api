@@ -62,7 +62,6 @@ public class AuthCodeService {
             throw new NoAssociatedUserException("No associated user.");
         }
         final User user = codeEntity.getUser();
-        user.setPillboxAssociated(true);
         userRepository.save(user);
 
         final String jwt = jwtService.generateToken(user);
