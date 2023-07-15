@@ -75,7 +75,12 @@ public class AuthCodeService {
         }
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        userRepository.findById(userId).ifPresent(codeEntity::setUser);
+        codeRepository.findByUserId(userId).ifPresentOrElse(c -> {
+            codeEntity.setUser(c.getUser());
+            c.setUser(null);
+            codeRepository.save(c);
+        }, () -> userRepository.findById(userId).ifPresent(codeEntity::setUser));
+
         codeRepository.save(codeEntity);
     }
 
