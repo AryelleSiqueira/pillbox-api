@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name="password", nullable = false)
     private String password;
 
-    @Column(name = "pillbox_associated", nullable = false)
-    private Boolean pillboxAssociated;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
