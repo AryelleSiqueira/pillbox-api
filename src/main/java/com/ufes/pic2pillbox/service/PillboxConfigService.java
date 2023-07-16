@@ -35,8 +35,8 @@ public class PillboxConfigService {
     public PillboxConfigDTO getConfig(String token) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        //int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
-        log.info("Code: {}", token);
+//        TODO
+//        int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
 
 //        codeRepository.findById(code)
 //                .map(Code::getUser)
@@ -50,7 +50,7 @@ public class PillboxConfigService {
         final Map<String, String> slotsNames = new HashMap<>();
         final Map<Integer, Alarm> alarms = new HashMap<>();
 
-        slots.sort(Comparator.comparing(Slot::getSlotNumber));
+        slots.sort(Comparator.comparingInt(s -> s.getSlotNumber().ordinal()));
         slots.forEach(slot -> {
             slotsNames.put(slot.getSlotNumber().name(), slot.getName());
             slot.getAlarms().forEach(alarm -> alarms.put(alarm.getId(), alarm));
@@ -60,7 +60,9 @@ public class PillboxConfigService {
             AlarmDTO.builder()
                     .hour(alarm.getHour())
                     .minute(alarm.getMinute())
-                    .slots(alarm.getSlots().stream().map(Slot::getSlotNumber).collect(Collectors.toList()))
+                    .slots(alarm.getSlots().stream().map(Slot::getSlotNumber)
+                            .sorted(Comparator.comparingInt(Enum::ordinal))
+                            .collect(Collectors.toList()))
                     .build()
         ).sorted((a1, a2) -> {
             if (a1.getHour() != a2.getHour()) {
