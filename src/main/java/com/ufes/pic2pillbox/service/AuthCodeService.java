@@ -59,7 +59,7 @@ public class AuthCodeService {
         if (user == null) {
             throw new NoAssociatedUserException("No associated user.");
         }
-        final String jwt = jwtService.generateToken(Map.of("code", code), user);
+        final String jwt = jwtService.generateToken(Map.of("code", code.getCode()), user);
 
         return AuthenticationResponseDTO.builder()
                 .token(jwt)

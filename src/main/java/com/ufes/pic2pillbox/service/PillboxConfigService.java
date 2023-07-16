@@ -4,6 +4,7 @@ import com.ufes.pic2pillbox.dto.pillbox.AlarmDTO;
 import com.ufes.pic2pillbox.dto.pillbox.PillboxConfigDTO;
 import com.ufes.pic2pillbox.exception.NoAssociatedUserException;
 import com.ufes.pic2pillbox.model.Alarm;
+import com.ufes.pic2pillbox.model.Code;
 import com.ufes.pic2pillbox.model.Slot;
 import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.CodeRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,16 @@ public class PillboxConfigService {
 
     private final CodeRepository codeRepository;
 
+    private final JwtService jwtService;
 
-    public PillboxConfigDTO getConfig() {
+
+    public PillboxConfigDTO getConfig(String jwt) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        codeRepository.findByUserId(userId)
+        int code = jwtService.extractAllClaims(jwt).get("code", Integer.class);
+
+        codeRepository.findById(code)
+                .map(Code::getUser)
                 .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
 
         final List<Slot> slots = slotRepository.findAllByUserId(userId);
@@ -40,6 +47,7 @@ public class PillboxConfigService {
         final Map<String, String> slotsNames = new HashMap<>();
         final Map<Integer, Alarm> alarms = new HashMap<>();
 
+        slots.sort(Comparator.comparing(Slot::getSlotNumber));
         slots.forEach(slot -> {
             slotsNames.put(slot.getSlotNumber().name(), slot.getName());
             slot.getAlarms().forEach(alarm -> alarms.put(alarm.getId(), alarm));
@@ -51,7 +59,12 @@ public class PillboxConfigService {
                     .minute(alarm.getMinute())
                     .slots(alarm.getSlots().stream().map(Slot::getSlotNumber).collect(Collectors.toList()))
                     .build()
-        ).collect(Collectors.toList());
+        ).sorted((a1, a2) -> {
+            if (a1.getHour() != a2.getHour()) {
+                return a1.getHour() - a2.getHour();
+            }
+            return a1.getMinute() - a2.getMinute();
+        }).collect(Collectors.toList());
 
         return PillboxConfigDTO.builder()
                 .slots(slotsNames)
