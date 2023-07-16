@@ -30,10 +30,10 @@ public class PillboxConfigService {
     private final JwtService jwtService;
 
 
-    public PillboxConfigDTO getConfig(String jwt) {
+    public PillboxConfigDTO getConfig(String token) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        int code = jwtService.extractAllClaims(jwt).get("code", Integer.class);
+        int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
 
         codeRepository.findById(code)
                 .map(Code::getUser)
