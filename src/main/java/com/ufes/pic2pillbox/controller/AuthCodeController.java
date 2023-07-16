@@ -31,7 +31,7 @@ public class AuthCodeController {
         return ResponseEntity.ok(authenticationService.generateCode());
     }
 
-    @GetMapping("/get/token")
+    @PostMapping("/get/token")
     public ResponseEntity<AuthenticationResponseDTO> getTokenByCode(@RequestBody AuthCodeDTO authCode) {
         return ResponseEntity.ok(authenticationService.getTokenByCode(authCode));
     }
