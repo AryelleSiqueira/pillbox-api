@@ -10,6 +10,7 @@ import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.CodeRepository;
 import com.ufes.pic2pillbox.repository.SlotRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PillboxConfigService {
@@ -33,11 +35,12 @@ public class PillboxConfigService {
     public PillboxConfigDTO getConfig(String token) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
+        //int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
+        log.info("Code: {}", token);
 
-        codeRepository.findById(code)
-                .map(Code::getUser)
-                .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
+//        codeRepository.findById(code)
+//                .map(Code::getUser)
+//                .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
 
         final List<Slot> slots = slotRepository.findAllByUserId(userId);
 
