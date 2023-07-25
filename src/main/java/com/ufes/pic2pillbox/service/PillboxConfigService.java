@@ -9,6 +9,7 @@ import com.ufes.pic2pillbox.model.Slot;
 import com.ufes.pic2pillbox.model.User;
 import com.ufes.pic2pillbox.repository.CodeRepository;
 import com.ufes.pic2pillbox.repository.SlotRepository;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,15 +36,18 @@ public class PillboxConfigService {
     public PillboxConfigDTO getConfig(String token) {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-//        TODO
         final Integer code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
 
         if (code == null) {
-            throw new NoAssociatedUserException("Nao conseguiu extrair o code do token.");
+            throw new JwtException("Not allowed.");
         }
-//        codeRepository.findById(code)
-//                .map(Code::getUser)
-//                .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
+        final User user = codeRepository.findById(code)
+                .map(Code::getUser)
+                .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
+
+        if (user.getId() != userId) {
+            throw new JwtException("Invalid token.");
+        }
 
         final List<Slot> slots = slotRepository.findAllByUserId(userId);
 

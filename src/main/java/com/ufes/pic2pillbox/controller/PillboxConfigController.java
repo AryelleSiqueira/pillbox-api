@@ -5,6 +5,7 @@ import com.ufes.pic2pillbox.dto.pillbox.PillboxConfigDTO;
 import com.ufes.pic2pillbox.exception.NoAssociatedUserException;
 import com.ufes.pic2pillbox.service.AppConfigService;
 import com.ufes.pic2pillbox.service.PillboxConfigService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +46,8 @@ public class PillboxConfigController {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(NoAssociatedUserException.class)
-    public Map<String, Object> handleNoAssociatedUserException(NoAssociatedUserException ex) {
+    @ExceptionHandler({NoAssociatedUserException.class, JwtException.class})
+    public Map<String, Object> handleNoAssociatedUserException(Exception ex) {
         return Map.of("error", ex.getMessage());
     }
 }
