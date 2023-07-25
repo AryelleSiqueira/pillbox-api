@@ -36,8 +36,11 @@ public class PillboxConfigService {
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
 //        TODO
-//        int code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
+        final Integer code = jwtService.extractAllClaims(token.substring(7)).get("code", Integer.class);
 
+        if (code == null) {
+            throw new NoAssociatedUserException("Nao conseguiu extrair o code do token.");
+        }
 //        codeRepository.findById(code)
 //                .map(Code::getUser)
 //                .orElseThrow(() -> new NoAssociatedUserException("No associated user."));
@@ -50,7 +53,7 @@ public class PillboxConfigService {
         final Map<String, String> slotsNames = new HashMap<>();
         final Map<Integer, Alarm> alarms = new HashMap<>();
 
-        slots.sort(Comparator.comparingInt(s -> s.getSlotNumber().ordinal()));
+        slots.sort(Comparator.comparingInt(s -> s.getSlotNumber().ordinal())); // not working
         slots.forEach(slot -> {
             slotsNames.put(slot.getSlotNumber().name(), slot.getName());
             slot.getAlarms().forEach(alarm -> alarms.put(alarm.getId(), alarm));
