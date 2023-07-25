@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 public class User implements UserDetails {
 
     @Id
@@ -42,16 +41,6 @@ public class User implements UserDetails {
 
     @Column(name="password", nullable = false)
     private String password;
-
-    @Column(name = "pillbox_associated", nullable = false)
-    @ColumnDefault("false")
-    private Boolean pillboxAssociated;
-
-    @Column(name = "snooze_interval")
-    private Integer snoozeInterval;
-
-    @Column(name = "snooze_repeat")
-    private Integer snoozeRepeat;
 
 
     @Override

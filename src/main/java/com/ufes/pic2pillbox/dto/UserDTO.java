@@ -1,4 +1,4 @@
-package com.ufes.pic2pillbox.dto.pillbox;
+package com.ufes.pic2pillbox.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,17 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Map;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PillboxConfigDTO {
+public class UserDTO {
 
-    private Map<String, String> slots;
+    private String name;
 
-    private List<AlarmDTO> alarms;
+    private String email;
+
+    private String associatedPillbox;
 }

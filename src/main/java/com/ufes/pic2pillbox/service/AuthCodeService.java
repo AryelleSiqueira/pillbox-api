@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -29,18 +30,17 @@ public class AuthCodeService {
     private static final Random random = new Random();
 
 
-    public AuthCodeDTO getCode() {
+    public AuthCodeDTO generateCode() {
         final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 
         int hash = Math.abs(Objects.hash(System.currentTimeMillis(), random.nextInt(), sessionId));
         hash = hash > 9999999 ? hash / 1000 : hash;
 
         if (codeRepository.existsById(hash)) {
-            return getCode();
+            return generateCode();
         }
         final Code code = Code.builder()
                 .code(hash)
-                .expiresIn(System.currentTimeMillis() + 15 * 60 * 1000)
                 .build();
 
         codeRepository.save(code);
@@ -50,39 +50,47 @@ public class AuthCodeService {
                 .build();
     }
 
-    public AuthenticationResponseDTO getTokenByCode(int code) {
-        final Code codeEntity = codeRepository.findById(code)
-                .orElseThrow(() -> new InvalidCodeException("Invalid code."));
+    public AuthenticationResponseDTO getTokenByCode(AuthCodeDTO code) {
+        final Code codeEntity = codeRepository.findById(code.getCode())
+                .orElseThrow(() -> new InvalidCodeException("No pillbox registered with this code."));
 
-        if (codeEntity.getExpiresIn() < System.currentTimeMillis()) {
-            codeRepository.delete(codeEntity);
-            throw new InvalidCodeException("Code expired.");
-        }
-        if (codeEntity.getUser() == null) {
+        final User user = codeEntity.getUser();
+
+        if (user == null) {
             throw new NoAssociatedUserException("No associated user.");
         }
-        final String jwt = jwtService.generateToken(codeEntity.getUser());
-        codeRepository.delete(codeEntity);
+        final String jwt = jwtService.generateToken(Map.of("code", code.getCode()), user);
 
         return AuthenticationResponseDTO.builder()
                 .token(jwt)
                 .build();
     }
 
-    public void associateUser(int code) {
-        final Code codeEntity = codeRepository.findById(code)
-                .orElseThrow(() -> new InvalidCodeException("Invalid code."));
+    public void associateUser(AuthCodeDTO code) {
+        final Code codeEntity = codeRepository.findById(code.getCode())
+                .orElseThrow(() -> new InvalidCodeException("No pillbox registered with this code."));
 
-        if (codeEntity.getExpiresIn() < System.currentTimeMillis()) {
-            codeRepository.delete(codeEntity);
-            throw new InvalidCodeException("Code expired.");
-        }
         if (codeEntity.getUser() != null) {
-            throw new InvalidCodeException("Code already associated.");
+            throw new InvalidCodeException("Code already associated with a user.");
         }
         final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        userRepository.findById(userId).ifPresent(codeEntity::setUser);
+        codeRepository.findByUserId(userId).ifPresentOrElse(c -> {
+            codeEntity.setUser(c.getUser());
+            c.setUser(null);
+            codeRepository.save(c);
+        }, () -> userRepository.findById(userId).ifPresent(codeEntity::setUser));
+
+        codeRepository.save(codeEntity);
+    }
+
+    public void disassociateUser() {
+        final int userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        final Code codeEntity = codeRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoAssociatedUserException("User not associated with a pillbox."));
+
+        codeEntity.setUser(null);
         codeRepository.save(codeEntity);
     }
 }
